@@ -6,6 +6,10 @@ pub struct Vec3 {
 }
 
 impl Vec3 {
+    pub fn new(x: f32, y: f32, z: f32) -> Self {
+        Self { x, y, z }
+    }
+
     pub fn negate(&mut self) -> Self {
         Self {
             x: -self.x,
@@ -44,6 +48,22 @@ impl Vec3 {
 
     pub fn lenght_squared(self) -> f32 {
         self.x * self.x + self.y * self.y + self.z * self.z
+    }
+
+    pub fn unit_vec(self) -> Self {
+        self.clone().div(self.length())
+    }
+
+    pub fn dot(self, other: Self) -> f32 {
+        self.x * other.x + self.y * other.y + self.z * other.z
+    }
+
+    pub fn cross(self, other: Self) -> Self {
+        Self {
+            x: self.y * other.z - self.z * other.y,
+            y: self.z * other.x - self.x * other.z,
+            z: self.x * other.y - self.y * other.x,
+        }
     }
 }
 
