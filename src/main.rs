@@ -90,10 +90,10 @@ impl Ppm {
 }
 
 pub fn main() {
-    let aspect_ratio = 9.0 / 16.0;
+    let aspect_ratio = 16.0 / 9.0;
     let image_width = 400;
     let image_height = (image_width as f64 / aspect_ratio) as usize;
-    let image_height = if image_height > 1 { image_height } else { 1 };
+    // let image_height = if image_height > 1 { image_height } else { 1 };
 
     let mut ppm = Ppm::new("output.ppm", image_height, image_width);
     ppm.create_file().add_header();
@@ -119,8 +119,8 @@ pub fn main() {
         .clone()
         .add(pixel_delta_u.clone().add(pixel_delta_v).mul(0.5));
 
-    for i in 0..image_height {
-        for j in 0..image_width {
+    for j in 0..image_height {
+        for i in 0..image_width {
             let pixel_center = pixel00_loc
                 .clone()
                 .add(pixel_delta_u.clone().mul(i as f64))
@@ -131,9 +131,9 @@ pub fn main() {
             let ray = Ray::new(camera_center.clone(), ray_direction.clone());
             let ray_color = ray.get_color() as Color;
 
-            print!("\r[scanline remaining: {}]", (image_height - i));
+            print!("\r[scanline remaining: {}]", (image_width - i));
 
-            ppm.set_color_data(i, j, ray_color);
+            ppm.set_color_data(j, i, ray_color);
         }
     }
     ppm.write_ppm();
