@@ -1,19 +1,13 @@
 use std::fs::{File, OpenOptions};
 use std::io::Write;
-use std::ptr::read;
 
-#[derive(Clone, Copy)]
-struct Color {
-    r: u8,
-    g: u8,
-    b: u8,
-}
+#[path = "../lib/ray.rs"]
+mod ray;
+#[path = "../lib/vec3.rs"]
+mod vec3;
 
-impl Color {
-    pub fn format(self) -> String {
-        return format!("{} {} {}\n", self.r, self.g, self.b);
-    }
-}
+use vec3::Color;
+
 struct Ppm {
     height: usize,
     width: usize,
@@ -33,7 +27,17 @@ impl Ppm {
             height: height,
             file: None,
             maximum_color_value: 255,
-            color_data: vec![vec![Color { r: 0, g: 0, b: 0 }; width]; height],
+            color_data: vec![
+                vec![
+                    Color {
+                        x: 0.,
+                        y: 0.,
+                        z: 0.
+                    };
+                    width
+                ];
+                height
+            ],
         }
     }
     pub fn create_file(&mut self) -> &mut Self {
@@ -76,7 +80,7 @@ impl Ppm {
 
         for i in 0..self.height {
             for j in 0..self.width {
-                file.write_all(self.color_data[i][j].format().as_bytes())
+                file.write_all(self.color_data[i][j].serialize_color().as_bytes())
                     .expect("failed to write");
             }
         }
@@ -85,23 +89,17 @@ impl Ppm {
 
 pub fn main() {
     let mut ppm = Ppm::new("output.ppm", 256, 256);
-    let red_color: Color = Color { r: 255, g: 0, b: 0 };
     ppm.create_file().add_header();
 
     for i in 0..256 {
         for j in 0..256 {
-            let mut r = (i as f32) / 255.0;
-            let mut g = (j as f32) / 255.0;
-            let b: u8 = 100;
-            r *= 255.0;
-            g *= 255.0;
-            let r1 = r as u8;
-            let g1 = g as u8;
-            // println!("{} {} {}\n", r1, g1 , b);
-            ppm.set_color_data(i, j, Color { r: r1, g: g1, b });
+            print!("\r[scanline remaining: {}]", (256 - i));
+            let r = (i as f32) / 255.0;
+            let g: f32 = (j as f32) / 255.0;
+
+            ppm.set_color_data(i, j, Color { x: r, y: g, z: 0.0 });
         }
     }
-
     ppm.write_ppm();
 
     drop(ppm);
