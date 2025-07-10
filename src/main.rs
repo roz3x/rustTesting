@@ -7,7 +7,7 @@ mod ray;
 mod vec3;
 
 use vec3::Color;
-
+use vec3::Vec3;
 struct Ppm {
     height: usize,
     width: usize,
@@ -90,6 +90,19 @@ impl Ppm {
 pub fn main() {
     let mut ppm = Ppm::new("output.ppm", 256, 256);
     ppm.create_file().add_header();
+
+    let aspect_ratio = 16.0 / 9.0;
+    let image_width = 400;
+    let image_height = image_width / aspect_ratio as usize;
+    let image_height = if image_height > 1 { image_height } else { 1 };
+
+    let focal_length = 1.0 as f32;
+    let viewport_height = 2.0 as f32;
+    let viewport_width = viewport_height * (image_width as f32 / image_height as f32);
+
+    let camera_center = Vec3::new(0.0, 0.0, 0.0);
+    let viewport_u  = Vec3::new(viewport_width , 0.0, 0.0 );
+    let viewport_v = Vec3::new(0.0, -viewport_height, 0.0);
 
     for i in 0..256 {
         for j in 0..256 {
