@@ -12,13 +12,13 @@ impl Ray {
         Self { origin, direction }
     }
 
-    pub fn at(self, t: f32) -> Vec3 {
+    pub fn at(self, t: f64) -> Vec3 {
         self.direction.clone().mul(t).add(self.origin)
     }
 
     pub fn get_color(self) -> Color {
         let a = (self.direction.clone().unit_vec().y + 1.0) * 0.5;
-        Color::new(0.0, 0.0, 0.0)
+        Color::new(1.0, 1.0, 1.0)
             .mul(1.0 - a)
             .add(Color::new(0.5, 0.7, 1.0).mul(a))
     }

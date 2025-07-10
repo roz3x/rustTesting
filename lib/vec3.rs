@@ -1,12 +1,12 @@
 #[derive(Copy, Clone)]
 pub struct Vec3 {
-    pub x: f32,
-    pub y: f32,
-    pub z: f32,
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
 }
 
 impl Vec3 {
-    pub fn new(x: f32, y: f32, z: f32) -> Self {
+    pub fn new(x: f64, y: f64, z: f64) -> Self {
         Self { x, y, z }
     }
 
@@ -26,7 +26,7 @@ impl Vec3 {
         }
     }
 
-    pub fn mul(&mut self, a: f32) -> Self {
+    pub fn mul(&mut self, a: f64) -> Self {
         Self {
             x: self.x * a,
             y: self.y * a,
@@ -34,7 +34,7 @@ impl Vec3 {
         }
     }
 
-    pub fn div(&mut self, a: f32) -> Self {
+    pub fn div(&mut self, a: f64) -> Self {
         Self {
             x: self.x / a,
             y: self.y / a,
@@ -42,11 +42,11 @@ impl Vec3 {
         }
     }
 
-    pub fn length(self) -> f32 {
+    pub fn length(self) -> f64 {
         self.lenght_squared().sqrt()
     }
 
-    pub fn lenght_squared(self) -> f32 {
+    pub fn lenght_squared(self) -> f64 {
         self.x * self.x + self.y * self.y + self.z * self.z
     }
 
@@ -54,7 +54,7 @@ impl Vec3 {
         self.clone().div(self.length())
     }
 
-    pub fn dot(self, other: Self) -> f32 {
+    pub fn dot(self, other: Self) -> f64 {
         self.x * other.x + self.y * other.y + self.z * other.z
     }
 

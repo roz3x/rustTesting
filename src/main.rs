@@ -92,22 +92,22 @@ impl Ppm {
 pub fn main() {
     let aspect_ratio = 9.0 / 16.0;
     let image_width = 400;
-    let image_height = (image_width as f32 / aspect_ratio) as usize;
+    let image_height = (image_width as f64 / aspect_ratio) as usize;
     let image_height = if image_height > 1 { image_height } else { 1 };
 
     let mut ppm = Ppm::new("output.ppm", image_height, image_width);
     ppm.create_file().add_header();
 
-    let focal_length = 1.0 as f32;
-    let viewport_height = 2.0 as f32;
-    let viewport_width = viewport_height * (image_width as f32 / image_height as f32);
+    let focal_length = 1.0 as f64;
+    let viewport_height = 2.0 as f64;
+    let viewport_width = viewport_height * (image_width as f64 / image_height as f64);
 
     let camera_center = Vec3::new(0.0, 0.0, 0.0);
     let viewport_u = Vec3::new(viewport_width, 0.0, 0.0);
     let viewport_v = Vec3::new(0.0, -viewport_height, 0.0);
 
-    let pixel_delta_u = viewport_u.clone().div(image_width as f32);
-    let pixel_delta_v = viewport_v.clone().div(image_height as f32);
+    let pixel_delta_u = viewport_u.clone().div(image_width as f64);
+    let pixel_delta_v = viewport_v.clone().div(image_height as f64);
 
     let viewport_upper_left = camera_center
         .clone()
@@ -123,8 +123,8 @@ pub fn main() {
         for j in 0..image_width {
             let pixel_center = pixel00_loc
                 .clone()
-                .add(pixel_delta_u.clone().mul(i as f32))
-                .add(pixel_delta_v.clone().mul(j as f32));
+                .add(pixel_delta_u.clone().mul(i as f64))
+                .add(pixel_delta_v.clone().mul(j as f64));
 
             let ray_direction = pixel_center.clone().add(camera_center.clone().negate());
 
