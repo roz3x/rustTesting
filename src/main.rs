@@ -7,9 +7,9 @@ mod ray;
 #[path = "../lib/vec3.rs"]
 mod vec3;
 
+use ray::Ray;
 use vec3::Color;
 use vec3::Vec3;
-use ray::Ray;
 struct Ppm {
     height: usize,
     width: usize,
@@ -90,7 +90,6 @@ impl Ppm {
 }
 
 pub fn main() {
-
     let aspect_ratio = 9.0 / 16.0;
     let image_width = 400;
     let image_height = (image_width as f32 / aspect_ratio) as usize;
@@ -98,7 +97,6 @@ pub fn main() {
 
     let mut ppm = Ppm::new("output.ppm", image_height, image_width);
     ppm.create_file().add_header();
-
 
     let focal_length = 1.0 as f32;
     let viewport_height = 2.0 as f32;

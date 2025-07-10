@@ -1,6 +1,5 @@
-use crate::vec3::Vec3;
 use crate::vec3::Color;
-
+use crate::vec3::Vec3;
 
 #[derive(Clone, Copy)]
 pub struct Ray {
@@ -18,7 +17,9 @@ impl Ray {
     }
 
     pub fn get_color(self) -> Color {
-        let a = (self.direction.clone().unit_vec().y + 1.0) * 0.5 ;
-        Color::new(0.0, 0.0, 0.0).mul(1.0 - a).add(Color::new(0.5,0.7,1.0).mul(a))
+        let a = (self.direction.clone().unit_vec().y + 1.0) * 0.5;
+        Color::new(0.0, 0.0, 0.0)
+            .mul(1.0 - a)
+            .add(Color::new(0.5, 0.7, 1.0).mul(a))
     }
 }
