@@ -7,9 +7,7 @@ pub struct Ray {
 }
 
 impl Ray {
-    pub fn At(self, t: f32) -> Vec3 {
-        let x = self.direction.clone().mul(t);
-        let y = self.origin;
-        return x.clone().add(y);
+    pub fn at(self, t: f32) -> Vec3 {
+        self.direction.clone().mul(t).add(self.origin)
     }
 }
