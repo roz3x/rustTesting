@@ -89,11 +89,17 @@ impl Ppm {
     }
 }
 
+fn swap<T> (a: T, b: T) -> (T, T) {
+    (b , a)
+}
+
 pub fn main() {
     let aspect_ratio = 16.0 / 9.0;
     let image_width = 400;
     let image_height = (image_width as f64 / aspect_ratio) as usize;
     // let image_height = if image_height > 1 { image_height } else { 1 };
+    
+    let (image_height , image_width) = swap(image_height, image_width);
 
     let mut ppm = Ppm::new("output.ppm", image_height, image_width);
     ppm.create_file().add_header();
