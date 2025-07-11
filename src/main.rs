@@ -4,6 +4,8 @@ use std::io::Write;
 
 #[path = "../lib/ray.rs"]
 mod ray;
+#[path = "../lib/sphere.rs"]
+mod sphere;
 #[path = "../lib/vec3.rs"]
 mod vec3;
 
@@ -58,7 +60,7 @@ impl Ppm {
             Some(f) => {
                 let header = format!(
                     "P3\n{} {}\n{}\n",
-                    self.height, self.width, self.maximum_color_value
+                    self.width, self.height, self.maximum_color_value
                 );
                 f.write_all(header.as_bytes()).expect("file write failed");
             }
@@ -87,10 +89,17 @@ impl Ppm {
             }
         }
     }
+    pub fn write_now_ppm(&mut self, c: Color) {
+        let file = match &mut self.file {
+            Some(file) => file,
+            None => panic!("file not there"),
+        };
+        file.write(c.serialize_color().as_bytes()).expect("no fail");
+    }
 }
 
-fn swap<T> (a: T, b: T) -> (T, T) {
-    (b , a)
+fn swap<T>(a: T, b: T) -> (T, T) {
+    (b, a)
 }
 
 pub fn main() {
@@ -98,8 +107,8 @@ pub fn main() {
     let image_width = 400;
     let image_height = (image_width as f64 / aspect_ratio) as usize;
     // let image_height = if image_height > 1 { image_height } else { 1 };
-    
-    let (image_height , image_width) = swap(image_height, image_width);
+
+    // let (image_height, image_width) = swap(image_height, image_width);
 
     let mut ppm = Ppm::new("output.ppm", image_height, image_width);
     ppm.create_file().add_header();
@@ -132,12 +141,14 @@ pub fn main() {
                 .add(pixel_delta_u.clone().mul(i as f64))
                 .add(pixel_delta_v.clone().mul(j as f64));
 
-            let ray_direction = pixel_center.clone().add(camera_center.clone().negate());
+            let ray_direction = pixel_center.clone().remove(camera_center.clone());
 
             let ray = Ray::new(camera_center.clone(), ray_direction.clone());
             let ray_color = ray.get_color() as Color;
 
             print!("\r[scanline remaining: {}]", (image_width - i));
+
+            // ppm.write_now_ppm(ray_color);
 
             ppm.set_color_data(j, i, ray_color);
         }

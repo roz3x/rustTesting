@@ -25,6 +25,9 @@ impl Vec3 {
             z: self.z + other.z,
         }
     }
+    pub fn remove(&mut self, other: Self) -> Self {
+        self.add(other.clone().negate())
+    }
 
     pub fn mul(&mut self, a: f64) -> Self {
         Self {
