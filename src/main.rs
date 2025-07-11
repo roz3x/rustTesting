@@ -146,7 +146,7 @@ pub fn main() {
             let ray = Ray::new(camera_center.clone(), ray_direction.clone());
             let ray_color = ray.get_color() as Color;
 
-            print!("\r[scanline remaining: {}]", (image_width - i));
+            // print!("\r[scanline remaining: {}]", (image_width - i));
 
             // ppm.write_now_ppm(ray_color);
 
