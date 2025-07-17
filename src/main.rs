@@ -12,6 +12,8 @@ mod vec3;
 use ray::Ray;
 use vec3::Color;
 use vec3::Vec3;
+
+use crate::vec3::Hittable;
 struct Ppm {
     height: usize,
     width: usize,
